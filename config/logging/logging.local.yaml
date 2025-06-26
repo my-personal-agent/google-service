@@ -1,0 +1,6 @@
+handlers:
+  console:
+    formatter: default
+
+root:
+  level: DEBUG

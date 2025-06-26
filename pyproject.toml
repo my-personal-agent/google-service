@@ -1,0 +1,64 @@
+[tool.poetry]
+name = "google-service"
+version = "0.1.0"
+description = ""
+authors = ["Wai Yan Min Khaing <waiyanminkhaing1997@gmail.com>"]
+readme = "README.md"
+packages = [
+    { include = "config", from = "src" },
+    { include = "core", from = "src" },
+    { include = "middleware", from = "src" },
+    { include = "db", from = "src" },
+    { include = "services", from = "src" },
+    { include = "enums", from = "src" },
+    { include = "api", from = "src" },
+    { include = "google_mcp", from = "src" },
+]
+
+[tool.poetry.dependencies]
+python = ">=3.11,<4.0"
+pydantic = {extras = ["email"], version = "^2.11.7"}
+pydantic-settings = "^2.10.0"
+fastapi = "^0.115.13"
+python-json-logger = "^3.3.0"
+pyyaml = "^6.0.2"
+prometheus-client = "^0.22.1"
+psutil = "^7.0.0"
+async-lru = "^2.0.5"
+uvicorn = "^0.34.3"
+google-api-python-client = "^2.173.0"
+google-auth-httplib2 = "^0.2.0"
+google-auth-oauthlib = "^1.2.2"
+prisma = "^0.15.0"
+langchain-mcp-adapters = "^0.1.7"
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^4.2.0"
+black = "^25.1.0"
+ruff = "^0.12.0"
+mypy = "^1.16.1"
+pytest = "^8.4.1"
+pytest-asyncio = "^1.0.0"
+pytest-env = "^1.1.5"
+pytest-cov = "^6.2.1"
+mcp = {extras = ["cli"], version = "^1.9.4"}
+
+
+[tool.pytest.ini_options]
+env = [
+    "ENV=local",
+]
+
+[tool.mypy]
+namespace_packages = true
+explicit_package_bases = true
+mypy_path = ["src", "tests"]
+exclude = "^src/core/prisma/generated/"
+
+[tool.coverage.run]
+omit = ["*/__init__.py", "main.py"]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

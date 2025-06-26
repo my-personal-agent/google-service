@@ -1,0 +1,21 @@
+generator client {
+    provider             = "prisma-client-py"
+    recursive_type_depth = 5
+    output               = "../src/db/prisma/generated"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("POSTGRES_DATABASE_URL")
+}
+
+model TokenInfo {
+    id           String   @id @default(uuid())
+    userId       String   @unique
+    accessToken  String
+    refreshToken String?
+    expiry       DateTime
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
