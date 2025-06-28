@@ -6,13 +6,13 @@ from googleapiclient.discovery import build
 from mcp.server.fastmcp import Context
 from mcp.server.fastmcp.exceptions import ToolError
 
-from services.authorize_service import get_creds
+from services.auth_service import get_creds
 
 logger = logging.getLogger(__name__)
 
 
 async def send_gmail_mcp(
-    user_id: str,
+    gmail_user_id: str,
     to: str,
     subject: str,
     body: str,
@@ -33,7 +33,7 @@ async def send_gmail_mcp(
     )
 
     try:
-        creds = await get_creds(user_id)
+        creds = await get_creds(gmail_user_id)
         await mcp_ctx.info(
             f"Retrieved user credentials (request_id={mcp_ctx.request_id}, client_id={mcp_ctx.client_id})"
         )

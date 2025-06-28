@@ -13,12 +13,12 @@ logger = logging.getLogger(__name__)
 @mcp.tool()
 async def send_gmail(
     ctx: Context,
-    user_id: Annotated[
+    gmail_user_id: Annotated[
         str,
         BeforeValidator(str.strip),
         Field(
             min_length=1,
-            description="Unique identifier for the user sending the email. Used for authentication and rate limiting.",
+            description="Unique identifier for the user sending the email.",
         ),
     ],
     to: Annotated[
@@ -53,8 +53,8 @@ async def send_gmail(
     and provides detailed response information.
 
     Args:
-        user_id (str): Unique identifier for the authenticated user. Used for:
-            - Authentication verification
+        gmail_user_id (str): Unique identifier for the authenticated user. Used for:
+            - Sending gmail
             Must be a non-empty string after stripping whitespace.
 
         to (EmailStr): Recipient's email address. Must be a valid email format
@@ -115,4 +115,4 @@ async def send_gmail(
         - HTML content in body will be automatically detected and processed
         - All emails are sent from the authenticated user's Gmail account
     """
-    return await send_gmail_mcp(user_id, to, subject, body, mcp_ctx=ctx)
+    return await send_gmail_mcp(gmail_user_id, to, subject, body, mcp_ctx=ctx)

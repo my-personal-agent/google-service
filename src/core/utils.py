@@ -1,5 +1,8 @@
 from typing import List, Union
 
+from config.settings_config import get_settings
+from db.prisma.generated.models import ClientAuth
+
 
 def deep_merge(base: dict, override: dict) -> dict:
     """
@@ -43,3 +46,14 @@ def to_string(x: InputType) -> str:
         return " ".join(parts)
     else:
         raise TypeError(f"Unexpected type: {type(x)}")
+
+
+def get_google_client_config(client_auth: ClientAuth):
+    return {
+        "web": {
+            "client_id": client_auth.googleClientId,
+            "client_secret": client_auth.googleClientSecret,
+            "auth_uri": str(get_settings().google_auth_uri),
+            "token_uri": str(get_settings().google_token_uri),
+        }
+    }

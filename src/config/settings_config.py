@@ -25,14 +25,9 @@ class Settings(BaseSettings):
     mcp_transport: McpTransport
 
     # google
-    google_client_id: Annotated[str, BeforeValidator(str.strip), Field(min_length=1)]
-    google_client_secret: Annotated[
-        str, BeforeValidator(str.strip), Field(min_length=1)
-    ]
     google_redirect_uri: AnyHttpUrl
     google_auth_uri: AnyHttpUrl
     google_token_uri: AnyHttpUrl
-    google_scopes: List[AnyHttpUrl]
 
     class ConfigDict:
         env_file = ".env"
@@ -42,17 +37,6 @@ class Settings(BaseSettings):
     @computed_field
     def project_info(self) -> str:
         return f"{self.project_name} - {self.project_version}"
-
-    @computed_field
-    def google_client_config(self) -> dict:
-        return {
-            "web": {
-                "client_id": self.google_client_id,
-                "client_secret": self.google_client_secret,
-                "auth_uri": self.google_auth_uri,
-                "token_uri": self.google_token_uri,
-            }
-        }
 
 
 @lru_cache()

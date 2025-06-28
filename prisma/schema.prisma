@@ -9,13 +9,64 @@ datasource db {
     url      = env("POSTGRES_DATABASE_URL")
 }
 
-model TokenInfo {
+enum AuthType {
+    gmail
+}
+
+model Client {
+    id   String @id @default(uuid())
+    name String @unique
+
+    auths ClientAuth[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model ClientAuth {
+    id                 String   @id @default(uuid())
+    authType           AuthType
+    scopes             String[]
+    googleClientId     String
+    googleClientSecret String
+    redirectUri        String
+
+    client   Client @relation(fields: [clientId], references: [id])
+    clientId String
+
+    authFlows  OAuthFlow[]
+    userTokens UserToken[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@unique([authType, clientId])
+}
+
+model OAuthFlow {
+    id         String  @id @default(uuid())
+    state      String  @unique
+    currentUri String?
+
+    clientAuth   ClientAuth @relation(fields: [clientAuthId], references: [id])
+    clientAuthId String
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model UserToken {
     id           String   @id @default(uuid())
-    userId       String   @unique
+    googleId     String
     accessToken  String
     refreshToken String?
     expiry       DateTime
 
+    clientAuth   ClientAuth @relation(fields: [clientAuthId], references: [id])
+    clientAuthId String
+
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+
+    @@unique([googleId, clientAuthId])
 }
