@@ -52,6 +52,12 @@
     ],
     "compounds": [
         {
+            "name": "Run Google Service + MCP",
+            "configurations": ["Run Google Service","Run Google MCP"],
+            "stopAll": true,
+            "preLaunchTask": "delay"
+        },
+        {
             "name": "Run All",
             "configurations": ["Run Google Service","Run Google MCP", "Run Google MCP Inspector"],
             "stopAll": true,

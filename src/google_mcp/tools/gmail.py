@@ -80,7 +80,7 @@ async def send_gmail(
 
     Raises:
         ValueError: If any input parameter is invalid after validation
-        AuthenticationError: If user_id is not authenticated or token is invalid
+        AuthenticationError: If gmail_user_id is not authenticated or token is invalid
         RateLimitError: If user has exceeded their rate limit
         APIError: If Gmail API returns an error
         NetworkError: If there's a network connectivity issue
@@ -88,7 +88,7 @@ async def send_gmail(
     Examples:
         >>> # Send a simple text email
         >>> result = await send_gmail(
-        ...     user_id="user123",
+        ...     gmail_user_id="user123",
         ...     to="recipient@example.com",
         ...     subject="Hello from MCP",
         ...     body="This is a test email sent via MCP tool."
@@ -105,7 +105,7 @@ async def send_gmail(
         ... </html>
         ... '''
         >>> result = await send_gmail(
-        ...     user_id="user123",
+        ...     gmail_user_id="user123",
         ...     to="recipient@example.com",
         ...     subject="HTML Email Test",
         ...     body=html_body

@@ -115,19 +115,19 @@ async def auth_client_callback(state: str | None, code: str | None) -> RedirectR
 
 async def get_creds(user_token_id: str) -> Credentials:
     db = await get_db()
-    ut = await db.usertoken.find_unique(
+    user_token = await db.usertoken.find_unique(
         where={"id": user_token_id}, include={"clientAuth": True}
     )
-    if not ut or not ut.clientAuth:
+    if not user_token or not user_token.clientAuth:
         raise HTTPException(404, "User token not found")
 
     creds = Credentials(
-        token=ut.accessToken,
-        refresh_token=ut.refreshToken or None,
-        token_uri=get_settings().google_token_uri,
-        client_id=ut.clientAuth.googleClientId,
-        client_secret=ut.clientAuth.googleClientSecret,
-        scopes=ut.clientAuth.scopes,
+        token=user_token.accessToken,
+        refresh_token=user_token.refreshToken or None,
+        token_uri=str(get_settings().google_token_uri),
+        client_id=user_token.clientAuth.googleClientId,
+        client_secret=user_token.clientAuth.googleClientSecret,
+        scopes=user_token.clientAuth.scopes,
     )
 
     if creds.expired and creds.refresh_token:
@@ -139,7 +139,7 @@ async def get_creds(user_token_id: str) -> Credentials:
             )
 
         await db.usertoken.update(
-            where={"id": ut.id},
+            where={"id": user_token.id},
             data={"accessToken": creds.token, "expiry": creds.expiry},
         )
 
