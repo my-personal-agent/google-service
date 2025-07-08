@@ -144,7 +144,6 @@ async def send_gmail_mcp(
         return {
             "success": True,  # Return boolean instead of string
             "subject": subject,
-            "message_id": message_id,
             "timestamp": timestamp,
             "recipients": recipients_summary,
             "total_recipients": len(to)
